@@ -78,3 +78,23 @@ error LNK2019: 无法解析的外部符号 _main，该符号在函数 "int __cde
 
 搞定这个之后，再测试图片显示也OK了，本章结束。
 
+## 第四天
+1.4章 LoadGraphScreen()不推荐使用，替代函数为LoadGraph( char *FileName )。
+```
+#include "DxLib.h"
+
+int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
+        ChangeWindowMode( TRUE ); // ウィンドウモードに設定
+        DxLib_Init();   // DXライブラリ初期化処理
+
+        int Handle;     // データハンドル格納用変数
+        Handle = LoadGraph( "画像/キャラクタ00.png" ); // 画像をロード
+        DrawGraph( 50, 100, Handle, TRUE ); // データハンドルを使って画像を描画
+
+        WaitKey();     // キー入力があるまで待機
+        DxLib_End();   // DXライブラリ終了処理
+        return 0;
+} 
+```
+
+
