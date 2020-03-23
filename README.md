@@ -156,12 +156,15 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
         return 0 ;
 } 
 ```
+> ProcessMessage()返回值0成功，返回值-1错误或者窗口关闭
 1.5章结束。
 
 ## 第六天20/03/22
 第一个示例代码移动图像，上一次移动的画面会残留在屏幕上，变成一个长面条飞出屏幕外……
 作者提到显示器表里两个概念，如果直接把图像写入帧缓冲器，那在刷新时间以外的时候会出现没有描画完成的图像。    
 所以要在后台描画完成后再一口气传输到显示器上。
+之前我看过一个java小游戏案例，其中为了解决图像闪烁问题使用了双缓冲技术。    
+这个教程里的表里画面实际应该也是指双缓冲技术。
 ```C
 #include "DxLib.h"
 
@@ -189,8 +192,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 > Sleep函数：可以使程序进入休眠，使其在一段时间内处于非活动状态。
 > 当函数设定的计时器到期，或者接收到信号、程序发生中断都会导致程序继续执行。
 为了让图片可以实现平移效果，添加ClearDrawScreen()函数。
+> ClearDrawScreen()返回值0成功，返回值-1错误
 1.6章结束
 
+1.7章使用里画面    
 1.6章没有处理后台画面，现在添加SetDrawScreen函数。    
 把要描绘的对象作为里画面然后ScrenFrip函数将里画面变为表画面。    
 ```C
@@ -219,4 +224,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     return 0;
 }
 ```
-> 问题3：上个代码去除了sleep( )函数
+> 问题3：上个代码去除了sleep( )函数有何影响？
+1.7章完
+## 第七天20/03/23
+1.7章改进了一下代码，缩短了行数。    
+我倒是觉得一行一个函数比较清晰……    
+```C
+#include "DxLib.h"
+
+int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
+    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK ); //ウィンドウモード変更と初期化と裏画面設定
+
+    int x = 0;
+    int Handle;     // 画像格納用ハンドル
+    Handle = LoadGraph( "图片/vase.png" ); // 画像のロード
+
+    // while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
+    while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
+        DrawGraph( x, 100, Handle, TRUE ); //画像の描画
+        x = x + 2; // xを2増やす
+
+    }
+        
+    DxLib_End(); // DXライブラリ終了処理
+    return 0;
+} 
+```
+1.8章呈现多个图片不同速度的代码。    
+1.7/1.8章完
