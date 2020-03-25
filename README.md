@@ -133,7 +133,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 }
 ```
 接下来作者提到有些情况下程序会死机，为了避免未响应的情况需要添加一个ProcessMessage()函数。    
-这个函数是为了防止windows死机，经常需要用，日后可加深理解
+假如程序一直在执行一个耗时很长的循环，如果没有这个函数则用户做其他操作都不会得到回应，像是死机了。    
+在循环里添加函数后，可以使得在循环中程序还能来处理用户别的操作。    
+多线程知识，日后补充了解。    
 修改为：
 ```C
 #include "DxLib.h"
@@ -148,7 +150,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 
     while( 1 ){
         if( ProcessMessage() != 0 ){
-            break; 
+            break; //消息处理函数
         }
     }
         
@@ -178,7 +180,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
     while (1) {
         if (ProcessMessage() != 0) { 
-            break; // 
+            break; //消息处理函数
         }
         DrawGraph(x, 100, Handle, TRUE); //描画图像
         x = x + 2; // x以2递增
@@ -212,7 +214,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
     while (1) {
         if (ProcessMessage() != 0) {
-            break; // 
+            break; //消息处理函数 
         }
         ClearDrawScreen(); // 清除画面
         DrawGraph(x, 100, Handle, TRUE); //描画图像
@@ -233,22 +235,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #include "DxLib.h"
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
-    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK ); //ウィンドウモード変更と初期化と裏画面設定
+    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK ); //设定窗口模式、初始化、设定里画面
 
     int x = 0;
-    int Handle;     // 画像格納用ハンドル
-    Handle = LoadGraph( "图片/vase.png" ); // 画像のロード
+    int Handle;     // 设定变量
+    Handle = LoadGraph( "图片/vase.png" ); // 加载图像
 
-    // while(裏画面を表画面に反映, メッセージ処理, 画面クリア)
+    // while(把里画面反应到表画面, 消息处理函数, 清除画面)
     while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
-        DrawGraph( x, 100, Handle, TRUE ); //画像の描画
-        x = x + 2; // xを2増やす
-
+        DrawGraph( x, 100, Handle, TRUE ); //描画图像
+        x = x + 2; // x以2递增
     }
         
-    DxLib_End(); // DXライブラリ終了処理
+    DxLib_End(); // 结束DXLib
     return 0;
 } 
 ```
 1.8章呈现多个图片不同速度的代码。    
 1.7/1.8章完
+
+## 第八天20/03/25
+2.1章 演示了后描画的图像会覆盖在先描画的图像之上。    
+2.2章 图像旋转·扩大缩小    
+|函数声明|	int DrawRotaGraph( int x, int y, double ExtRate, double Angle, int GrHandle , int TransFlag ) ;|
+|-----|------|
+|参数|x,y：图像中心坐标，从图像的中心开始，DrawGraph是从左上角开始|
+| |ExtRate：放大率（1.0的倍数）|
+| |Angle：描画角度，采用弧度制|
+| |GrHandle：加载图像的变量|
+| |TransFlag：透明度flag，TRUE有效FALSE无效|
+
+
