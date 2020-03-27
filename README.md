@@ -264,5 +264,16 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 | |Angle：描画角度，采用弧度制|
 | |GrHandle：加载图像的变量|
 | |TransFlag：透明度flag，TRUE有效FALSE无效|
+2.1、2.2章完。
+
+## 第九天20/03/27
+2.3章 阿尔法混合（透明处理）    
+ps中见过阿尔法通道，这个通道用来储存透明信息，0代表透明，1代表不透明。    
+使用函数SetDrawBlendMode( int BlendMode , int Pal ):    
+第一个参数指定为DX_BLENDMODE_ALPHA，第二个参数范围为0（完全透明）~255（完全不透明）    
+2.4章 叠加混合    
+第一个参数指定为DX_BLENDMODE_ADD，第二个参数范围0（完全不叠加）~255（完全叠加）    
+查找了一些图像发光原理，是将原图进行模糊处理后再叠加到原图上达成发光效果的。    
+
 
 
