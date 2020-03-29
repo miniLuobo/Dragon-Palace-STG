@@ -264,16 +264,76 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 | |Angle：描画角度，采用弧度制|
 | |GrHandle：加载图像的变量|
 | |TransFlag：透明度flag，TRUE有效FALSE无效|
+
 2.1、2.2章完。
 
 ## 第九天20/03/27
-2.3章 阿尔法混合（透明处理）    
-ps中见过阿尔法通道，这个通道用来储存透明信息，0代表透明，1代表不透明。    
+2.3章 Alpha混合（透明处理）    
+ps中见过alpha通道，这个通道用来储存透明信息，0代表透明，1代表不透明。    
 使用函数SetDrawBlendMode( int BlendMode , int Pal ):    
 第一个参数指定为DX_BLENDMODE_ALPHA，第二个参数范围为0（完全透明）~255（完全不透明）    
 2.4章 叠加混合    
 第一个参数指定为DX_BLENDMODE_ADD，第二个参数范围0（完全不叠加）~255（完全叠加）    
 查找了一些图像发光原理，是将原图进行模糊处理后再叠加到原图上达成发光效果的。    
+
+## 第十天20/03/29  
+2.4章作者给的示例里，alpha混合取值是128，叠加混合取值是255，我还是不太明白两种处理有什么区别。    
+设置相同的参数对比,左侧是alpha函数，右侧是叠加函数：    
+ ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC128.jpg)
+ ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC255.jpg)
+ 叠加混合重合部分是融合在一起的。    
+ 2.3、2.4章完。    
+ 
+ 2.5章 显示文字使用int DrawFormatString( int x , int y , int Color , char FormatString , ... )：    
+ x，y是文字起点坐标，color文字颜色，FormatString文字引用地址。    
+ 其中颜色需要int GetColor( int Red , int Green , int Blue )来获取：    
+ 三个参数为对应色的亮度（0~255）。    
+```C
+int x=0, y=0;
+int Green = GetColor( 0, 255, 0 );      // 设定颜色变量
+
+while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
+    DrawFormatString( x, y, Green, "座標[%d,%d]", x, y ); // “ ”内填写字符串
+}
+```
+2.6章 取得随机数
+GetRand( int RandMax ) 获得随机数。    
+SRand函数取得随机数初始值，如果不设置DX会自动给出随机初始值。    
+这里有个概念初始值指的是随机数的初始种子，种子是序列号，指定了种子也就指定了之后的随机数列。    
+计算机并不存在真正的随机数。
+```c
+int Random[8]; //创建一个8位数组
+int Green = GetColor( 0, 255, 0 );  // 设定颜色变量
+
+SRand( 123456 ); // 设定随机数种子
+
+Random[0] = GetRand( 100 ); // 生成0~100的随机数
+Random[1] = GetRand( 100 );
+Random[2] = GetRand( 100 );
+Random[3] = GetRand( 100 );
+
+SRand( 123456 ); // 再次设定随机数种子
+
+Random[4] = GetRand( 100 ); // 生成0~100的随机数
+Random[5] = GetRand( 100 );
+Random[6] = GetRand( 100 );
+Random[7] = GetRand( 100 );
+
+while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
+    for( int i=0; i<8; i++ ){
+        DrawFormatString( 0, 20*i, Green, "%d", Random[i] ); // for循环输出数组里的随机数
+    }
+}
+```
+2.5章、2.6章完。    
+
+
+
+
+
+
+
+
 
 
 
