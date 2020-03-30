@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 }
 ```
 ChangeWindowMode(TRUE): 当值为TRUE时变成窗口模式，FALSE时为全屏模式。    
-1.2章结束    
+1.2章完    
 
 ## 第二天20/03/17
 1.3章 让程序窗口出现指定的图像     
@@ -159,7 +159,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 } 
 ```
 > ProcessMessage()返回值0成功，返回值-1错误或者窗口关闭
-1.5章结束。
+1.5章完
 
 ## 第六天20/03/22
 第一个示例代码移动图像，上一次移动的画面会残留在屏幕上，变成一个长面条飞出屏幕外……
@@ -195,7 +195,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 > 当函数设定的计时器到期，或者接收到信号、程序发生中断都会导致程序继续执行。
 为了让图片可以实现平移效果，添加ClearDrawScreen()函数。
 > ClearDrawScreen()返回值0成功，返回值-1错误
-1.6章结束
+1.6章完
 
 1.7章使用里画面    
 1.6章没有处理后台画面，现在添加SetDrawScreen函数。    
@@ -252,7 +252,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 } 
 ```
 1.8章呈现多个图片不同速度的代码。    
-1.7/1.8章完
+1.7、1.8章完
 
 ## 第八天20/03/25
 2.1章 演示了后描画的图像会覆盖在先描画的图像之上。    
@@ -282,7 +282,7 @@ ps中见过alpha通道，这个通道用来储存透明信息，0代表透明，
  ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC128.jpg)
  ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC255.jpg)
  叠加混合重合部分是融合在一起的。    
- 2.3、2.4章完。    
+ 2.3、2.4章完    
  
  2.5章 显示文字使用int DrawFormatString( int x , int y , int Color , char FormatString , ... )：    
  x，y是文字起点坐标，color文字颜色，FormatString文字引用地址。    
@@ -325,7 +325,12 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
     }
 }
 ```
-2.5章、2.6章完。    
+2.5章、2.6章完    
+
+## 第十一天20/03/30
+2.7章 添加效果音    
+声音函数LoadSoundMem（），游戏素材多以ogg格式居多，原因是MP3有专利权尽量回避。    
+> 搜索后发现MP3的专利已经到期了    
 
 
 
