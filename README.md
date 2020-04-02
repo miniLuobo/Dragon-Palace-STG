@@ -344,6 +344,25 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
 总算在一次运行中看到这个信息`warning C4566: ユニバーサル文字名 '\uD55C' によって表示されてい`    
 肯定是我本地设置的编码有问题，待解决……
 
+## 第十四天20/04/02
+2.7章的遇到的问题和一开始配置环境时设置的`多字节字符集`和`Unicode字符集`，等有空了再补充……  
+2.7章完。
+2.8章 分割画像读入 
+看到这章让我想起一直以来的一个疑问：
+>常常看到游戏素材是一张图片上密密麻麻堆满了各种小素材    
+>这种素材是原画师自己拼接的吗，还是系统自动生成？
+
+这样的图片可以用类似的TexturePacker图片打包工具完成。   
+要读取这样的图片需要分割则使用LoadDivGraph（）函数
+|函数声明|int LoadDivGraph( char FileName , int AllNum ,int XNum ,int YNum ,int XSize ,int YSize ,int HandleBuf ) ;|
+|-----|------|
+|参数|FileName：文件名|
+| |AllNum：要分割图片的总数|
+| |XNum ,YNum：图片的横向分割数和纵向分割数|
+| |SizeX ,SizeY：一个分割图像的大小|
+| |HandleBuf　　 :　分割読み込みして得たグラフィックハンドルを
+　　　　　　　　保存するint型の配列へのポインタ|
+
 
 
 
