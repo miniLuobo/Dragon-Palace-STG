@@ -279,15 +279,16 @@ ps中见过alpha通道，这个通道用来储存透明信息，0代表透明，
 ## 第十天20/03/29  
 2.4章作者给的示例里，alpha混合取值是128，叠加混合取值是255，我还是不太明白两种处理有什么区别。    
 设置相同的参数对比,左侧是alpha函数，右侧是叠加函数：    
- ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC128.jpg)
- ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC255.jpg)
- 叠加混合重合部分是融合在一起的。    
- 2.3、2.4章完    
+![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC128.jpg)
+![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%8F%96%E5%80%BC255.jpg)
+
+叠加混合重合部分是融合在一起的。    
+2.3、2.4章完    
  
- 2.5章 显示文字使用int DrawFormatString( int x , int y , int Color , char FormatString , ... )：    
- x，y是文字起点坐标，color文字颜色，FormatString文字引用地址。    
- 其中颜色需要int GetColor( int Red , int Green , int Blue )来获取：    
- 三个参数为对应色的亮度（0~255）。    
+2.5章 显示文字使用int DrawFormatString( int x , int y , int Color , char FormatString , ... )：    
+x，y是文字起点坐标，color文字颜色，FormatString文字引用地址。    
+其中颜色需要int GetColor( int Red , int Green , int Blue )来获取：    
+三个参数为对应色的亮度（0~255）。    
 ```C
 int x=0, y=0;
 int Green = GetColor( 0, 255, 0 );      // 设定颜色变量
@@ -360,8 +361,7 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
 | |AllNum：要分割图片的总数|
 | |XNum ,YNum：图片的横向分割数和纵向分割数|
 | |SizeX ,SizeY：一个分割图像的大小|
-| |HandleBuf　　 :　分割読み込みして得たグラフィックハンドルを
-　　　　　　　　保存するint型の配列へのポインタ|
+| |HandleBuf:　把分割好的图片指向int型数组的指针|
 
 
 
