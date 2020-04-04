@@ -1,4 +1,4 @@
-# STG小游戏开发日记
+# STG小游戏开发日记-DXLib学习篇
 目标：根据四圣龙神录作者公开的学习网站学习用VS编写一个完整的STG游戏。      
 自己现有的基础：基本的C语言知识（可以做些OJ网站基础题的水平）、一点点Java知识，有面向对象的概念，但是这次开发用的是C语言。    
 编程工具：Visual Studio2017、DXLib       
@@ -9,8 +9,8 @@ DXLib官网：https://dxlib.xsrv.jp/
 ## 第一天20/03/15
 先学习DXLib相关知识：https://dixq.net/g/    
 配置好VS2017环境，第一次正式使用VS2017，下载DXLib，DXLib是日本人开发的一个静态库。    
-> 问题1：VS控制台中文乱码的问题    
-> 已解决：错误是因为之前把控制面板里的区域语言改为了日文导致的    
+> 问题1：VS控制台中文乱码的问题？    
+> 已解决：错误是因为之前把控制面板里的区域语言改为了日文导致的。    
 
 DXLib教程1.2章 首先要做出一个窗口    
 示例程序：
@@ -57,7 +57,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 
 LoadGraphScreen():    
 读取图像并直接描绘到屏幕上。前两个XY位置参数起点是以屏幕左上角为原点（0,0）。  
-> 问题2：修改成自己电脑本地的照片后运行程序图片没有显示。
+> 问题2：修改成自己电脑本地的照片后运行程序图片没有显示？    
 > 已解决：这里我犯了一个错误，放图片的路径不对，右下角调试窗口信息提示有两个图片文件夹，看来得补习一下VS2017的操作方法和目录结构。
 
 ## 第三天20/03/18
@@ -66,7 +66,8 @@ VS2017教程说新建项目时最好以空项目建立，于是重新新建了�
 迷惑了半天找到解决办法：    
 ![image](https://github.com/miniLuobo/Dragon-Palace-STG/blob/master/diary_resources/%E5%B0%86%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%94%B9%E4%B8%BA%E7%AA%97%E5%8F%A3.jpg)   
 
-搞定这个之后，再测试图片显示也OK了，本章结束。
+搞定这个之后，再测试图片显示也OK了。    
+1.3章完
 
 ## 第四天20/03/20
 1.4章 LoadGraphScreen()不推荐使用，替代函数为LoadGraph( char FileName )。    
@@ -159,6 +160,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 } 
 ```
 > ProcessMessage()返回值0成功，返回值-1错误或者窗口关闭
+
 1.5章完
 
 ## 第六天20/03/22
@@ -195,9 +197,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 > 当函数设定的计时器到期，或者接收到信号、程序发生中断都会导致程序继续执行。
 为了让图片可以实现平移效果，添加ClearDrawScreen()函数。
 > ClearDrawScreen()返回值0成功，返回值-1错误
+
 1.6章完
 
-1.7章使用里画面    
+1.7章 使用里画面    
 1.6章没有处理后台画面，现在添加SetDrawScreen函数。    
 把要描绘的对象作为里画面然后ScrenFrip函数将里画面变为表画面。    
 ```C
@@ -227,7 +230,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 }
 ```
 > 问题3：上个代码去除了sleep( )函数有何影响？
+
 1.7章完
+
 ## 第七天20/03/23
 1.7章改进了一下代码，缩短了行数。    
 我倒是觉得一行一个函数比较清晰……    
@@ -265,13 +270,14 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 | |GrHandle：加载图像的变量|
 | |TransFlag：透明度flag，TRUE有效FALSE无效|
 
-2.1、2.2章完。
+2.1、2.2章完
 
 ## 第九天20/03/27
 2.3章 Alpha混合（透明处理）    
 ps中见过alpha通道，这个通道用来储存透明信息，0代表透明，1代表不透明。    
 使用函数SetDrawBlendMode( int BlendMode , int Pal ):    
-第一个参数指定为DX_BLENDMODE_ALPHA，第二个参数范围为0（完全透明）~255（完全不透明）    
+第一个参数指定为DX_BLENDMODE_ALPHA，第二个参数范围为0（完全透明）~255（完全不透明）  
+
 2.4章 叠加混合    
 第一个参数指定为DX_BLENDMODE_ADD，第二个参数范围0（完全不叠加）~255（完全叠加）    
 查找了一些图像发光原理，是将原图进行模糊处理后再叠加到原图上达成发光效果的。    
@@ -344,10 +350,16 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
 啥也没干，换了系统语言又安装了VS日文包还是不支持日文路径。  
 总算在一次运行中看到这个信息`warning C4566: ユニバーサル文字名 '\uD55C' によって表示されてい`    
 肯定是我本地设置的编码有问题，待解决……
+> 04/04补充：
+> 2.7章的遇到的问题和一开始配置环境时设置的`多字节字符集`和`Unicode字符集`有关 
+> 多字节字符集所用的编码为ANSI编码，中文操作系统使用GBK编码，日文操作系统是Shift_JIS编码。  
+> 但是如果使用Unicode字符集，DxLib会报错，这是另一个需要解决的疑问。   
+> 如果字符编码不解决，那就不能直接用DrawFormatString（）函数来做多国语言台词。    
+> 最坏的情况是，台词系统变成图片，像Va-11一开始做的。
+
+2.7章完
 
 ## 第十四天20/04/02
-2.7章的遇到的问题和一开始配置环境时设置的`多字节字符集`和`Unicode字符集`，等有空了再补充……  
-2.7章完。
 2.8章 分割画像读入 
 看到这章让我想起一直以来的一个疑问：
 >常常看到游戏素材是一张图片上密密麻麻堆满了各种小素材    
@@ -361,9 +373,63 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
 | |AllNum：要分割图片的总数|
 | |XNum ,YNum：图片的横向分割数和纵向分割数|
 | |SizeX ,SizeY：一个分割图像的大小|
-| |HandleBuf:　把分割好的图片指向int型数组的指针|
+| |HandleBuf:　把分割好的图片保存到int型数组|
+```C
+int image[16]; //创建储存分割图像的数组
+    LoadDivGraph( "图片/行走图.png" , 16 , 4 , 4 , 32 , 32 , image ); // 调用函数读取画像
 
+    while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
+        DrawGraph( 0, 0, image[8], TRUE );      // 输出画像
+}
+```
+2.8章完
 
+## 第十五天20/04/04
+2.9章 获取所有按键输入状态    
+DXLib函数能获取输入按键的信息，但是没有能记录在哪个位置按键的函数。    
+示例代码演示了如果不记录位置，显示内容会飞到屏幕外去。    
+所以作者自创了一个函数来记录按键次数gpUpdateKey（）：
+```C
+#include "DxLib.h"
+
+int Key[256]; // キーが押されているフレーム数を格納する
+
+// 更新按键输入情况
+int gpUpdateKey(){
+    char tmpKey[256]; // 保存现在的按键情况
+    GetHitKeyStateAll( tmpKey ); // 获得全部的按键情况
+    for( int i=0; i<256; i++ ){ 
+        if( tmpKey[i] != 0 ){ // i番のキーコードに対応するキーが押されていたら
+            Key[i]++;     // 自增
+        }
+        else {              // 如果没按下
+            Key[i] = 0;   
+        }
+    }
+    return 0;
+}
+
+int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
+    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK ); //ウィンドウモード変更と初期化と裏画面設定
+
+    int x=0;
+
+    // while(裏画面を表画面に反映, メッセージ処理, 画面クリア, キーの状態更新)
+    while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 && gpUpdateKey()==0 ){
+
+        DrawFormatString( x, 0, GetColor(255,255,255), "?!" ); // x,0 の位置に白で ?! を描画
+
+        if( Key[KEY_INPUT_RIGHT] == 1 ){ // 右キーが押された瞬間なら
+            x = x + 50;                 // xを50加算
+        }
+
+    }
+
+DxLib_End(); // DXライブラリ終了処理
+return 0;
+} 
+```
+这一段还不是特别懂，等实际运用时再说
 
 
 
