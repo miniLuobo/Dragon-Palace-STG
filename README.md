@@ -9,6 +9,7 @@ DXLib官网：https://dxlib.xsrv.jp/
 ## 第一天20/03/15
 先学习DXLib相关知识：https://dixq.net/g/    
 配置好VS2017环境，第一次正式使用VS2017，下载DXLib，DXLib是日本人开发的一个静态库。    
+DXLib函数是之后正式编写程序的重要基础！
 > 问题1：VS控制台中文乱码的问题？    
 > 已解决：错误是因为之前把控制面板里的区域语言改为了日文导致的。    
 
@@ -55,7 +56,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 }
 ```
 
-LoadGraphScreen():    
+LoadGraphScreen( ):    
 读取图像并直接描绘到屏幕上。前两个XY位置参数起点是以屏幕左上角为原点（0,0）。  
 > 问题2：修改成自己电脑本地的照片后运行程序图片没有显示？    
 > 已解决：这里我犯了一个错误，放图片的路径不对，右下角调试窗口信息提示有两个图片文件夹，看来得补习一下VS2017的操作方法和目录结构。
@@ -70,7 +71,7 @@ VS2017教程说新建项目时最好以空项目建立，于是重新新建了�
 1.3章完
 
 ## 第四天20/03/20
-1.4章 LoadGraphScreen()不推荐使用，替代函数为LoadGraph( char FileName )。    
+1.4章 LoadGraphScreen( )不推荐使用，替代函数为LoadGraph( char FileName )。    
 因为从硬盘中读取数据非常低效，要采用将数据传到内存读取的办法。    
 ```C
 #include "DxLib.h"
@@ -88,7 +89,6 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
     return 0;
 } 
 ```
-（晚上太困了先睡觉……）
 
 ## 第五天20/03/21
 1.5章 监听输入   
@@ -388,51 +388,73 @@ int image[16]; //创建储存分割图像的数组
 2.9章 获取所有按键输入状态    
 DXLib函数能获取输入按键的信息，但是没有能记录在哪个位置按键的函数。    
 示例代码演示了如果不记录位置，显示内容会飞到屏幕外去。    
-所以作者自创了一个函数来记录按键次数gpUpdateKey（）：
+所以作者自创了一个函数来记录按键次数gpUpdateKey（），记录的数组大小一定要设为256！
 ```C
 #include "DxLib.h"
 
-int Key[256]; // キーが押されているフレーム数を格納する
+int Key[256]; // 储存按键按下的帧率，フレーム数→フレームレート（Frame rate）：帧率FPS，Hz
 
-// 更新按键输入情况
+// 更新按键的状态
 int gpUpdateKey(){
-    char tmpKey[256]; // 保存现在的按键情况
-    GetHitKeyStateAll( tmpKey ); // 获得全部的按键情况
+    char tmpKey[256]; // 储存现在的按键状态
+    GetHitKeyStateAll( tmpKey ); // 获取全部的按键状态
     for( int i=0; i<256; i++ ){ 
-        if( tmpKey[i] != 0 ){ // i番のキーコードに対応するキーが押されていたら
+        if( tmpKey[i] != 0 ){ // 如果按下第i个键码对应的按键，キーコード（KeyCode）：键码
             Key[i]++;     // 自增
         }
-        else {              // 如果没按下
-            Key[i] = 0;   
+        else{              // 如果没有按下
+            Key[i] = 0;   // 设定为0
         }
     }
     return 0;
 }
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
-    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK ); //ウィンドウモード変更と初期化と裏画面設定
+    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK );
 
-    int x=0;
-
-    // while(裏画面を表画面に反映, メッセージ処理, 画面クリア, キーの状態更新)
     while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 && gpUpdateKey()==0 ){
 
-        DrawFormatString( x, 0, GetColor(255,255,255), "?!" ); // x,0 の位置に白で ?! を描画
-
-        if( Key[KEY_INPUT_RIGHT] == 1 ){ // 右キーが押された瞬間なら
-            x = x + 50;                 // xを50加算
+        if( Key[KEY_INPUT_Z] >= 60 ){ // 如果z按下帧率超过60
+            DrawFormatString( 0, 0, GetColor(255,255,255), "?!" ); // 显示文字
         }
-
     }
 
-DxLib_End(); // DXライブラリ終了処理
-return 0;
+    DxLib_End();
+    return 0;
 } 
 ```
-这一段还不是特别懂，等实际运用时再说
+这其实就是模拟出了持续按z连续射击的状态。    
+2.9章完
 
+## 第十六天20/04/05
+3.1章 根据按键让角色移动    
+承接上一章，这章作者划分了两个步骤，分别定义了两个函数，一是计算位移部分，二是描画图像部分。    
+```C
+int x=320, y=240;
+int Handle; //全局变量设定main函数中要加载的图片初始坐标
 
+void gpCalc(){ //定义计算位移函数
+	if( Key[ KEY_INPUT_RIGHT ] >= 1 ){
+		x++;
+	}
+	if( Key[ KEY_INPUT_DOWN  ] >= 1 ){
+		y++;
+	}
+	if( Key[ KEY_INPUT_LEFT  ] >= 1 ){
+		x--;
+	}
+	if( Key[ KEY_INPUT_UP    ] >= 1 ){
+		y--;
+	}
+}
 
+void gpDraw(){ //定义重绘图像函数
+        DrawRotaGraph( x, y, 1.0, 0.0, Handle, TRUE );
+}
+```
+定义好函数后，在main函数的while函数中添加这两个函数。    
+这套代码执行后有个问题是没有边界判定，图片可以移动到窗口外去，之后肯定要修改的。    
+3.1章完
 
 
 
