@@ -466,45 +466,55 @@ void gpDraw(){ //定义重绘图像函数
 ```C
 // 创建菜单构造体
 typedef struct {
-	int x, y;       // 菜单坐标
-	char name[128]; // 菜单项目
+    int x, y;       // 菜单坐标
+    char name[128]; // 菜单项目
 } MenuElement_t;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK);
+    ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK);
 
-	// 创建菜单内容
-	MenuElement_t MenuElement[5] = {
-		{  80, 100, "开始游戏" }, 
-		{ 100, 150, "彩蛋" },
-		{ 100, 200, "帮助" },
-		{ 100, 250, "设置" },
-		{ 100, 300, "结束游戏" },
-	};
-	int SelectNum = 0; // 创建选择序号变量
+    // 创建菜单内容
+    MenuElement_t MenuElement[5] = {
+        {  80, 100, "开始游戏" }, 
+        { 100, 150, "彩蛋" },
+        { 100, 200, "帮助" },
+        { 100, 250, "设置" },
+        { 100, 300, "结束游戏" },
+    };
+    int SelectNum = 0; // 创建选择序号变量
 	
-	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0 && gpUpdateKey() == 0) {
+    while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0 && gpUpdateKey() == 0) {
 
-		if (Key[KEY_INPUT_DOWN] == 1) { // 按下键盘的瞬间
+        if (Key[KEY_INPUT_DOWN] == 1) { // 按下键盘的瞬间
 
-		SelectNum = (SelectNum + 1) % 5; // 利用余数循环
+        SelectNum = (SelectNum + 1) % 5; // 利用余数循环
 
-		for (int i = 0; i < 5; i++) {             
-			if (i == SelectNum) {      //选中的菜单
-				MenuElement[i].x = 80; // 坐标向左平移，呈现选中的菜单会往前移动的效果
-			}
-			else {                       
-				MenuElement[i].x = 100;// 其他没选中的菜单，x坐标恢复100
-			}
-		}
-	}
+        for (int i = 0; i < 5; i++) {             
+            if (i == SelectNum) {      //选中的菜单
+            MenuElement[i].x = 80; // 坐标向左平移，呈现选中的菜单会往前移动的效果
+            }
+            else {                       
+                MenuElement[i].x = 100;// 其他没选中的菜单，x坐标恢复100
+            }
+        }
+    }
 
-	for (int i = 0; i < 5; i++) { // メニュー項目を描画
-	DrawFormatString(MenuElement[i].x, MenuElement[i].y, GetColor(255, 255, 255), MenuElement[i].name);
-	}
+    for (int i = 0; i < 5; i++) { // 绘制菜单
+    DrawFormatString(MenuElement[i].x, MenuElement[i].y, GetColor(255, 255, 255), MenuElement[i].name);
+    }
 }
 ```
+3.2、3.3章完
 
+## 第十八天20/04/07
+3.4章 制作简单的选择画面2（上下都能移动）    
+前章作者介绍如何向下移动菜单，用的循环公式是`SelectNum = ( SelectNum + 1 ) % 5;`    
+这样循环顺序会变成0→1→2→3→4→0→1→2→3→4→0，但是如果直接用`SelectNum = ( SelectNum - 1 ) % 5;`    
+SelectNum值会变成负数，然后依旧是0→1→2→3→4→0→1→2→3→4→0的循环顺序。  
+要将循环变为0→4→3→2→1→0→4→3→2→1→0，则`SelectNum = ( SelectNum + 4 ) % 5;`
+在之前判断语句之下添加一段代码：
+```C
+```
 
 
 
