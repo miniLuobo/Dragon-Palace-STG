@@ -460,11 +460,49 @@ void gpDraw(){ //定义重绘图像函数
 3.2章 利用余数做循环    
 循环体中经常用余数做循环，这章很好理解。    
 3.3章 制作简单的选择画面    
-構造体：structure 结构体，顺便复习一下结构体知识    
+構造体：structure 结构体，顺便打开《C Primer Plus》复习一下结构体知识……    
 把开始菜单的选项写进结构体里，如果按下↓方向键则改变选项坐标。    
-> VS调试居然不能直接在窗口输入参数？？
+>问题4： VS的调试不能直接在窗口输入参数？？
 ```C
+// 创建菜单构造体
+typedef struct {
+	int x, y;       // 菜单坐标
+	char name[128]; // 菜单项目
+} MenuElement_t;
 
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+	ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK);
+
+	// 创建菜单内容
+	MenuElement_t MenuElement[5] = {
+		{  80, 100, "开始游戏" }, 
+		{ 100, 150, "彩蛋" },
+		{ 100, 200, "帮助" },
+		{ 100, 250, "设置" },
+		{ 100, 300, "结束游戏" },
+	};
+	int SelectNum = 0; // 创建选择序号变量
+	
+	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0 && gpUpdateKey() == 0) {
+
+		if (Key[KEY_INPUT_DOWN] == 1) { // 按下键盘的瞬间
+
+		SelectNum = (SelectNum + 1) % 5; // 利用余数循环
+
+		for (int i = 0; i < 5; i++) {             
+			if (i == SelectNum) {      //选中的菜单
+				MenuElement[i].x = 80; // 坐标向左平移，呈现选中的菜单会往前移动的效果
+			}
+			else {                       
+				MenuElement[i].x = 100;// 其他没选中的菜单，x坐标恢复100
+			}
+		}
+	}
+
+	for (int i = 0; i < 5; i++) { // メニュー項目を描画
+	DrawFormatString(MenuElement[i].x, MenuElement[i].y, GetColor(255, 255, 255), MenuElement[i].name);
+	}
+}
 ```
 
 
