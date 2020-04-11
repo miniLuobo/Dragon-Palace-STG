@@ -522,7 +522,39 @@ if( Key[ KEY_INPUT_UP ] == 1 ){ // 如果按了↑键
 3.4章完
 
 ## 第十九天20/04/08
-我想在选项里添加一个彩蛋，结合之前的学习内容试一试。
+我想在选项里添加一个彩蛋，结合之前的学习内容试一试。    
+输入指定按键，开启特殊模式（待补充）
 
+## 第二十天20/04/11
+3.5章 用正弦函数使图像上下/大小光滑变化    
+正弦函数一个周期横坐标为2π，纵坐标区间为[-1，1]    
+如果一秒内使用0~60的自增变量，sin函数=sin( π\*2 / 60 \* Count )    
+```C
+#include <math.h>
+#include "DxLib.h"
 
+#define PI 3.141592654f  //C语言的单精度浮点数末尾记得要加f
+
+int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
+ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK );
+
+    int Handle;    
+    int Count = 0;
+    Handle = LoadGraph( "图片/角色.png" ); 
+    while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
+
+// 复习DrawRotaGraph( x坐标, y坐标, 放大比例, 旋转角度, 图片 , 透明度 )
+        DrawRotaGraph( 100, 240+sin(PI*2/240*Count)*200, 1.0, 0.0, Handle, TRUE ); //画像の描画
+        DrawRotaGraph( 500, 240, 1.0+sin(PI*2/120*Count)*0.5, 0.0, Handle, TRUE ); //画像の描画
+        Count++;
+
+    }
+        
+    DxLib_End();
+    return 0;
+}  
+```
+π\*2 / 240 \* Count 因为一秒内循环60次，所以count的值可以达到60,4秒后达到240，则完成一个周期。    
+所以sin公式=sin( π\* 2 / 周期 * Count ) * 振幅    
+3.5章完
 
