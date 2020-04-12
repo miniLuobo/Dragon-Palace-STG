@@ -1,6 +1,6 @@
 # STG小游戏开发日记-DXLib学习篇
-目标：根据四圣龙神录作者公开的学习网站学习用VS编写一个完整的STG小游戏。      
-自己现有的基础：基本的C语言知识、一点点Java知识。    
+目标：根据四圣龙神录作者Dixqさん公开的学习网站学习用VS编写一个完整的STG小游戏。      
+现有的基础：基本的C语言知识。    
 编程工具：Visual Studio2017、DXLib       
 美术工具：Procreate(iPad)  
 音乐特效：    
@@ -8,10 +8,11 @@ DXLib官网：https://dxlib.xsrv.jp/
 
 ## 第一天20/03/15
 先学习DXLib相关知识：https://dixq.net/g/    
-配置好VS2017环境，第一次正式使用VS2017，下载DXLib，DXLib是日本人开发的一个静态库。    
+配置好VS2017环境，第一次正式使用VS2017，下载DXLib。    
+DXLib是日本作者山田巧2001年开发的一个开源库，至今仍在更新，目前除了windows平台手机平台甚至支持PS4和Switch平台。        
 DXLib函数是之后正式编写程序的重要基础！
-> 问题1：VS控制台中文乱码的问题？    
-> 已解决：因为之前把控制面板里的区域语言改为了日文没改回来。    
+> 问题1：VS控制台出现中文乱码？    
+> 已解决：因为之前把控制面板里的区域语言改为了日文没改回来。（之后还需要解决多语言的问题）    
 
 DXLib教程1.2章 首先要做出一个窗口    
 示例程序：
@@ -71,7 +72,7 @@ VS2017教程说新建项目时最好以空项目建立，于是重新新建了�
 1.3章完
 
 ## 第四天20/03/20
-1.4章 LoadGraphScreen( )不推荐使用，替代函数为LoadGraph( char FileName )。    
+1.4章 LoadGraphScreen( )不推荐使用，替代函数为LoadGraph( char \*FileName )。    
 因为从硬盘中读取数据非常低效，要采用将数据传到内存读取的办法。    
 ```C
 #include "DxLib.h"
@@ -291,7 +292,7 @@ ps中见过alpha通道，这个通道用来储存透明信息，0代表透明，
 叠加混合重合部分是融合在一起的。    
 2.3、2.4章完    
  
-2.5章 显示文字使用int DrawFormatString( int x , int y , int Color , char FormatString , ... )：    
+2.5章 显示文字使用int DrawFormatString( int x , int y , int Color , char \*FormatString , ... )：    
 x，y是文字起点坐标，color文字颜色，FormatString文字引用地址。    
 其中颜色需要int GetColor( int Red , int Green , int Blue )来获取：    
 三个参数为对应色的亮度（0~255）。    
@@ -367,7 +368,7 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
 
 这样的图片可以用类似的TexturePacker图片打包工具完成。   
 要读取这样的图片需要分割则使用LoadDivGraph（）函数
-|函数声明|int LoadDivGraph( char FileName , int AllNum ,int XNum ,int YNum ,int XSize ,int YSize ,int HandleBuf ) ;|
+|函数声明|int LoadDivGraph( char \*FileName , int AllNum ,int XNum ,int YNum ,int XSize ,int YSize ,int \*HandleBuf ) ;|
 |-----|------|
 |参数|FileName：文件名|
 | |AllNum：要分割图片的总数|
@@ -557,4 +558,34 @@ ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK );
 π\*2 / 240 \* Count 因为一秒内循环60次，所以count的值可以达到60,4秒后达到240，则完成一个周期。    
 所以sin公式=sin( π\* 2 / 周期 * Count ) * 振幅    
 3.5章完
+
+## 第二十一天20/04/12
+3.6章 用正弦函数进行平滑移动    
+正弦函数在[0 ~ π/2]区间的值为[0 ~ 1]，起始部分y轴上升快，接近1的时候平缓。        
+就像拿手指弹一颗玻璃弹珠的时候，先是速度快最后慢慢停止运动。    
+与之相对的，启动平缓结束也平缓的x轴区间是[2π - π/2　~　2π + π/2]，y轴区间为[-1，1]。    
+但是因为有负数，y轴取值范围想要在[0，1]就要在原有区间[-1，1]上加上1再除以2。  
+最后变成一条起始和结束都平缓的曲线。    
+```C
+while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
+
+    DrawRotaGraph( 420, 400-sin(PI/2/120*Count)*300, 1.0, 0.0, Handle, TRUE ); //未修改前的正弦函数
+
+    DrawRotaGraph( 220, 400-(sin(-PI/2+PI/120*Count)+1)/2*300, 1.0, 0.0, Handle, TRUE ); //修改后的正弦函数
+
+    if( Count < 120 ){
+    Count++;
+    }
+    if( CheckHitKey( KEY_INPUT_Z ) == 1 ){
+        Count = 0;
+    }
+}
+```
+第一个公式的取值范围在[0，π/2]之间，前后坡度不一。    
+第二个公式的取值范围在[-π/2，π/2]之间，把sin的值+1再/2后就是平缓曲线了。    
+作者建议要做出平稳移动效果的时候要多利用sin函数。    
+3.6章完    
+
+3.7章 
+
 
