@@ -1,28 +1,28 @@
-# STG小游戏开发日记-DXLib学习篇
+# STG小游戏开发日记-DxLib学习篇
 目标：根据四圣龙神录作者Dixqさん公开的学习网站学习用VS编写一个完整的STG小游戏。      
 现有的基础：基本的C语言知识。    
-编程工具：Visual Studio2017、DXLib       
+编程工具：Visual Studio2017、DxLib       
 美术工具：Procreate(iPad)  
 音乐特效：    
-DXLib官网：https://dxlib.xsrv.jp/
+DxLib官网：https://dxlib.xsrv.jp/
 
 ## 第一天20/03/15
-先学习DXLib相关知识：https://dixq.net/g/    
-配置好VS2017环境，第一次正式使用VS2017，下载DXLib。    
-DXLib是日本作者山田巧2001年开发的一个开源库，至今仍在更新，目前除了windows平台手机平台甚至支持PS4和Switch平台。        
-DXLib函数是之后正式编写程序的重要基础！
+先学习DxLib相关知识：https://dixq.net/g/    
+配置好VS2017环境，第一次正式使用VS2017，下载DxLib。    
+DxLib是日本作者山田巧さん2001年开发的一个开源库，至今仍在更新，目前除了windows平台手机平台甚至支持PS4和Switch平台。        
+DxLib函数是之后正式编写程序的重要基础！
 > 问题1：VS控制台出现中文乱码？    
 > 已解决：因为之前把控制面板里的区域语言改为了日文没改回来。（之后还需要解决多语言的问题）    
 
-DXLib教程1.2章 首先要做出一个窗口    
+DxLib教程1.2章 首先要做出一个窗口    
 示例程序：
 ```C
 #include "DxLib.h"
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
-    DxLib_Init();   // 初始化DXLib
+    DxLib_Init();   // 初始化DxLib
     WaitKey();      // 等待键盘输入
-    DxLib_End();    // 结束DXLib
+    DxLib_End();    // 结束DxLib
     return 0;
 }
 ```
@@ -34,9 +34,9 @@ C程序中的进入点是函数Main，Windows程序的进入点是WinMain，这�
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
     ChangeWindowMode(TRUE); // 设定窗口模式
-    DxLib_Init();   // 初始化DXLib
+    DxLib_Init();   // 初始化DxLib
     WaitKey();      // 等待键盘输入
-    DxLib_End();    // 结束DXLib
+    DxLib_End();    // 结束DxLib
     return 0;
 }
 ```
@@ -49,10 +49,10 @@ ChangeWindowMode(TRUE): 当值为TRUE时变成窗口模式，FALSE时为全屏�
 #include "DxLib.h"
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
-    DxLib_Init();   // 初始化DXLib
+    DxLib_Init();   // 初始化DxLib
     LoadGraphScreen( 50, 100, "图片/vase.png", TRUE ); // 描绘图像
     WaitKey();      // 等待键盘输入
-    DxLib_End();    // 结束DXLib
+    DxLib_End();    // 结束DxLib
     return 0;
 }
 ```
@@ -79,14 +79,14 @@ VS2017教程说新建项目时最好以空项目建立，于是重新新建了�
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){ 
     ChangeWindowMode( TRUE ); // 设定窗口模式
-    DxLib_Init();   // 初始化DXLib
+    DxLib_Init();   // 初始化DxLib
 
     int Handle;     // 设定变量
     Handle = LoadGraph( "图片/vase.png" ); // 加载画像
     DrawGraph( 50, 100, Handle, TRUE ); // 使用变量来描画图像
 
     WaitKey();     // 等待键盘输入
-    DxLib_End();   // 结束DXLib
+    DxLib_End();   // 结束DxLib
     return 0;
 } 
 ```
@@ -118,7 +118,7 @@ if( CheckHitKey( KEY_INPUT_ESCAPE ) == 0 )
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     ChangeWindowMode(TRUE); // 设定窗口模式
-    DxLib_Init();   // 初始化DXLib
+    DxLib_Init();   // 初始化DxLib
 
     int Handle; // 设定变量
     Handle = LoadGraph("图片/vase.png"); // 加载画像
@@ -130,7 +130,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         }
     }
 
-    DxLib_End();   // 结束DXLib
+    DxLib_End();   // 结束DxLib
     return 0;
 }
 ```
@@ -144,7 +144,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
     ChangeWindowMode( TRUE ); // 设定窗口模式
-    DxLib_Init();   // 初始化DXLib
+    DxLib_Init();   // 初始化DxLib
 
     int Handle; // 设定变量
     Handle = LoadGraph("图片/vase.png"); // 加载画像
@@ -156,7 +156,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
         }
     }
         
-        DxLib_End() ;   // 结束DXLib
+        DxLib_End() ;   // 结束DxLib
         return 0 ;
 } 
 ```
@@ -175,7 +175,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     ChangeWindowMode(TRUE); // 设定窗口模式
-    DxLib_Init(); // 初始化DXLib
+    DxLib_Init(); // 初始化DxLib
 
     int x = 50;
     int Handle; // 设定变量
@@ -190,7 +190,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         Sleep(7); // 7[ms]待机
     }
 
-    DxLib_End(); // 结束DXLib
+    DxLib_End(); // 结束DxLib
     return 0;
 }
 ```
@@ -209,7 +209,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     ChangeWindowMode(TRUE); // 设定窗口模式
-    DxLib_Init(); // 初始化DXLib
+    DxLib_Init(); // 初始化DxLib
     SetDrawScreen(DX_SCREEN_BACK); //把描画目标设置为里画面
 
     int x = 0;
@@ -226,7 +226,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
         ScreenFlip(); // 显示里画面
     }
 
-    DxLib_End(); // 结束DXLib
+    DxLib_End(); // 结束DxLib
     return 0;
 }
 ```
@@ -253,7 +253,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
         x = x + 2; // x以2递增
     }
         
-    DxLib_End(); // 结束DXLib
+    DxLib_End(); // 结束DxLib
     return 0;
 } 
 ```
@@ -387,7 +387,7 @@ int image[16]; //创建储存分割图像的数组
 
 ## 第十五天20/04/04
 2.9章 获取所有按键输入状态    
-DXLib函数能获取输入按键的信息，但是没有能记录在哪个位置按键的函数。    
+DxLib函数能获取输入按键的信息，但是没有能记录在哪个位置按键的函数。    
 示例代码演示了如果不记录位置，显示内容会飞到屏幕外去。    
 所以作者自创了一个函数来记录按键次数gpUpdateKey（），记录的数组大小一定要设为256！
 ```C
@@ -586,6 +586,9 @@ while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 ){
 作者建议要做出平稳移动效果的时候要多利用sin函数。    
 3.6章完    
 
-3.7章 
+3.7章 让子弹按指定角度飞行
+STG游戏中，sin&cos函数非常重要的原因是坐标都是（x，y），子弹与自机的位置正好是直角三角形的斜边。    
+案例是演示了子弹按随机角度和随机速度飞行，很好理解。    
+3.7章完
 
 
